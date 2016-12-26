@@ -1,0 +1,4 @@
+macOS Sierra(10.12.2)
+CPU:2GHz intel Core i5
+メモリ:8GB 1867MHz LPDDR3
+SSD:251GB
