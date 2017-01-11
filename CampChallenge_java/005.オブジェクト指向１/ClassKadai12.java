@@ -32,8 +32,11 @@ public class ClassKadai12 {
 //ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 //課題２　「クラス継承」ここから
    //２つの変数の中身をクリアするパブリックなメソッド
-   public class ClaKei extends ClassKadai12{
-      
+   public void Da(){
+      a=0;
+   }
+   public void Db(){
+      b=0;
    }
 //課題２　「クラス継承」ここまで
 
