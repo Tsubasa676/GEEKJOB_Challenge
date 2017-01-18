@@ -13,8 +13,6 @@
    </head>
    <body>
       <h2>submitボタン＞ページ移動oct.jspページが表示された</h2>
-   </body>
-</html>
 <%
    //受け取るパラメータの文字コード
    request.setCharacterEncoding("UTF-8");
@@ -26,12 +24,19 @@
    //String l = request.getParameter("cmbList");
    String m = request.getParameter("mulText");
    String s = request.getParameter("btnSubmit");
-   out.print("入力されたデータを表示「"+n+"」<br>");
+   out.print("入力されたデータを表示「 "+n+"」<br>");
+   out.print("選択された性別を表示　「 "+r+"」<br>");
+   out.print("入力されたデータを表示「 "+m+"」<br>");
+   out.print("　表示が終わりました。<br>");
+   
+   //sess.jspへのログイン日時を取得
+   HttpSession hs = request.getSession(true);
+   out.print("<br>sess.jspへの最後のログインは、"+hs.getAttribute("LastLogin")+"でした<br>");
 %>
-<%
-   //cookieに入るのは文字列だけ
-   //cookieに入れるデータは誰からでも見られると認識しておく。
+<br><br>
+      <form action="./index.html" method="post">
+      <input type="submit" value="index.htmlへ戻る" name="CSubmit">
+      </form>
+   </body>
+</html>
 
-
-
-%>
