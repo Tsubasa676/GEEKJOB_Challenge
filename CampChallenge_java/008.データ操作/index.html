@@ -4,6 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
+
 <html>
    <head>
       <title>8 Java データ操作</title>
@@ -12,18 +13,24 @@ and open the template in the editor.
    </head>
    <body>
       <h1>8 Java/データ操作</h1>
-      <!-- 課題１　
-         以下の入力フィールドを持ったHTMLを、Javaで処理する想定で記述してください。
-         ・名前（テキストボックス）、性別（ラジオボタン）、趣味（複数行テキストボックス）-->
       <form action="./oct.jsp" method="post">
-         名前を入力：<input type="text" name="txtName"><br><br>
+         入力：<input type="text" name="txtName"><br><br>
          <!-- <input type="checkbox" name="chkTest"> -->
-         <input type="radio" value="男" name="rdo1">男
-         <input type="radio" value="女" name="rdo1">女<br><br>
-         <textarea name="mulText"></textarea><br><br>
+         <input type="radio" value="男" name="rdo1" checked="">男
+         <input type="radio" value="女" name="rdo1">女
+         <input type="radio" value="他" name="rdo1">他<br><br>
+         <textarea name="mulText" rows="2" cols="50"></textarea><br><br>
          <!-- <input type="button" name="btnTest"> -->
-         <input type="submit" name="btnSubmit">
+         <input type="submit" value="　送　信　" name="btnSubmit">
          <!-- <select name="cmbList"></select> -->
+      </form>
+      <br><h2>以下はcook.jspに対して</h2>
+      <form action="./cook.jsp" method="post">
+         <input type="submit" value="　cook.jspへ　" name="CSubmit">
+      </form>
+      <br><h2>以下はsess.jspに対して</h2>
+      <form action="./sess.jsp" method="post">
+         <input type="submit" value="　sess.jspへ　" name="CSubmit">
       </form>
    </body>
 </html>
