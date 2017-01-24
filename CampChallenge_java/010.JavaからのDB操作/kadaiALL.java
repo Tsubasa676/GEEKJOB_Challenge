@@ -73,7 +73,7 @@ public class kadaiALL extends HttpServlet {
          //課題５
          //nameに「茂」を含む情報を取得し、画面に取得した情報を表示してください
          db_st  = db_con.prepareStatement("select * from profiles where name LIKE ?");
-         db_st.setString(1,"茂");
+         db_st.setString(1,"%茂%");
          db_data= db_st.executeQuery();
          while(db_data.next()){
             out.print("ID："+db_data.getString("profilesID")+"　名前："+db_data.getString("name")
