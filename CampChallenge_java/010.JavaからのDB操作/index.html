@@ -6,12 +6,14 @@ and open the template in the editor.
 -->
 <html>
    <head>
-      <title>TODO supply a title</title>
+      <title>DB操作　8-13</title>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
    <body>
-      <h1>DB操作　課題８〜１２</h1>
+      <a href="#idou">　下に移動　</a>
+      <a name="idou2"></a>
+      <h1>DB操作　課題８〜１３</h1>
       <form action="./db1.jsp" method="post">
          <p>課題８　検索したい漢字一文字を入力</p>
          <p><input type="text" name="one" value="" placeholder='一文字しか検索できません'></p>
@@ -188,7 +190,7 @@ and open the template in the editor.
       </form><br>
       <form action="./db3.jsp" method="post">
          <p>課題１０　profileIDで指定したレコードを削除する</p>
-         <p><input type="text" maxlength='1' name="de" value="" style="width:50px" placeholder='１数字のみ'></p>
+         <p><input type="text" maxlength='4' name="de" value="" style="width:50px" placeholder='ID番号'></p>
          <input type="submit" value="　課題１０　結果へ　" name="btnSubmit">
       </form><br>
       <form action="./db4.jsp" method="post">
@@ -525,5 +527,11 @@ and open the template in the editor.
          </select>※月or日,月and日のみの選択は無効</p>
          <input type="submit" value="　課題１２　結果へ　" name="btnSubmit">
       </form><br>
+      <form action="./login.jsp" method="post">
+         <p>課題13　ログインとパスワード</p>
+         <input type="submit" value="　課題13　Login へ　" name="btnSubmit">
+      </form><br>
+      <a name="idou"></a>
+      <a href="#idou2">　　U p　　</a>
    </body>
 </html>
