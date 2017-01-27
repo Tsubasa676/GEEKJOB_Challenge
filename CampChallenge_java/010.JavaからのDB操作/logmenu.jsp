@@ -35,8 +35,8 @@
       ds.setString(1,user);
       dr = ds.executeQuery();
       while(dr.next()){
-         out.print("ID："+dr.getString("userID")+"　名前："+dr.getString("name")
-         +"　Pass："+dr.getString("pass"));
+         out.print("ID："+dr.getString("userID")+"　名前："+dr.getString("name")//なくて良い
+         +"　Pass："+dr.getString("pass"));                                   //なくて良い
          password = dr.getString("pass");
       }
       //判定
