@@ -1,6 +1,6 @@
 package base;
 /**
- *
+ *　DriverManagerの設定
  * @author hayashi-s
  */
 

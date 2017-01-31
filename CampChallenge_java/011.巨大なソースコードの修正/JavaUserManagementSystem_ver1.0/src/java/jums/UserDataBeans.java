@@ -1,4 +1,5 @@
 /*
+課題３
 フォームから受け取ったデータを格納
 これを利用して表示や分岐などをする。
  */
@@ -15,9 +16,6 @@ public class UserDataBeans {
    private int userID;
    private String name;
    private Date birthday;
-   private int year;
-   private int month;
-   private int day;
    private int type;
    private String tell;
    private String comment;
