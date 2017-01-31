@@ -1,4 +1,4 @@
-<!--課題１、４-->
+<!-- 課題１、４ -->
 <%@page import="jums.JumsHelper"%>
 <%@page import="javax.servlet.http.HttpSession" %>
 <%
