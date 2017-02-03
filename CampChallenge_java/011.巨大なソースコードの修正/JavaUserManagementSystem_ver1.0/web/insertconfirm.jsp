@@ -1,8 +1,17 @@
-<!-- 課題１、４ -->
-<%@page import="jums.JumsHelper"%>
-<%@page import="javax.servlet.http.HttpSession" %>
+<%@page import="jums.UserDataBeans"
+        import="jums.JumsHelper"
+        import="javax.servlet.http.HttpSession" %>
 <%
     HttpSession hs = request.getSession();
+    UserDataBeans us=(UserDataBeans)hs.getAttribute("udb");
+    boolean Judgment = true;//trueで提出
+    boolean JudgYMD  = true;//trueで提出
+    if(us.getName()!=""&&us.getYear()!=0&&us.getMonth()!=0&&us.getDay()!=0&&us.getTell()!=""&&us.getComment()!=""){
+       Judgment = false;
+    }
+    if(us.getYear()!=0&&us.getMonth()!=0&&us.getDay()!=0){
+       JudgYMD = false;
+    }
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,63 +21,27 @@
         <title>JUMS登録確認画面</title>
     </head>
     <body bgcolor="#FFFFE0">
-         <h1>登録確認</h1>
-    <% 
-      //職別の数字表記を文字表記に変更
-      String tyeps  = (String)hs.getAttribute("type");
-      int tyepi   = Integer.parseInt(tyeps);
-      //未入力を求めるための処理
-      int namex = 0 ;
-      int yearx = 0 ;
-      int tellx = 0 ;
-      int commentx =0;
-      if(!hs.getAttribute("name").equals("")){ 
-         namex=1;
-      }
-      if(!hs.getAttribute("year").equals("0")&&!hs.getAttribute("month").equals("0")&&!hs.getAttribute("day").equals("0")){ 
-         yearx=1;
-      }
-      if(!hs.getAttribute("tell").equals("")){ 
-         tellx=1;
-      }
-      if(!hs.getAttribute("comment").equals("")){ 
-         commentx=1;
-      }
-    if(namex==0||yearx==0||tellx==0||commentx==0){ %>
-         <h3>
-    <% if(namex == 0){ %>
-         ・名前
-    <% }if(yearx==0){ %>
-         ・生年月日
-    <% }if(tellx == 0){ %>
-         ・電話番号
-    <% }if(commentx == 0){ %>
-         ・自己紹介
-    <% } %>
-         が未入力です。</h3>
-         <h2>登録画面へ戻り、入力して下さい。</h2>
-    <%}else if(namex==1&&yearx==1&&tellx==1&&commentx==1){ %>
-        名前　　:<%= hs.getAttribute("name")%><br>
-        生年月日:<%= hs.getAttribute("year")+"年"+hs.getAttribute("month")+"月"+hs.getAttribute("day")+"日"%><br>
-        種別　　:<%if(tyepi==1){out.print(" エンジニア");}else if(tyepi==2){out.print(" 営 業　");}else{out.print(" そ の 他");}%><br>
-        電話番号:<%= hs.getAttribute("tell")%><br>
-        自己紹介:<%= hs.getAttribute("comment")%><br><br>
-        上記の内容で登録します。よろしいですか？<br>
+       <div><center><h1>登録　確認</h1></center>
+        <%if(Judgment){out.print("<h2>※入力が不十分です!!</h2>");}%>
+        名　前　:　<%if(us.getName()==""){out.print("　※　");}else{out.print(us.getName());}%><br>
+        生年月日:　<%if(JudgYMD){out.print("　※　");}else{out.print(us.getYear()+"年　"+us.getMonth()+"月　"+us.getDay()+"日");}%><br>
+        種　別　:　<%if(us.getType()==(1)){out.print("1.エンジニア");}else if(us.getType()==(2)){out.print("2.営業");}else{out.print("3.その他");}%><br>
+        電話番号:　<%if(us.getTell()==""){out.print("　※　");}else{out.print(us.getTell());}%><br>
+        自己紹介:　<%if(us.getComment()==""){out.print("　※　");}else{out.print(us.getComment());};%><br><br>
+        <%if(Judgment){out.print("　登録画面に戻って下さい");}else{out.print("※上記の内容で登録します。よろしいですか？");}%><br>
 <table>
    <tr>
-      <td>
-        <form action="insertresult" method="POST">
-            <input type="submit" name="yes" value=" は い ">
+      <td><form action="insertresult" method="POST">
+            <input type="hidden" name="ac" value="<%= hs.getAttribute("ac")%>"><%//直リンク防止の記述%>
+            <input type="submit" name="yes" value="　は い　" <%if(Judgment){out.print("disabled");}%> >
         </form></td>
-    <% }else{%>
-      <h2>予期せぬエラーが発生しました。<br>登録画面へ戻り、入力して下さい。</h2>
-    <% }%>
-      <td><form action="insert" method="POST">
-            <input type="submit" name="no" value=" 戻 る ">
-        </form></td> 
+        <td><form action="insert" method="POST">
+            　<input type="submit" name="no" value="登録画面に戻る">
+        </form></td>
    </tr>
 </table>
-        <br>
-        <%=JumsHelper.getInstance().home()%>
+    
+        <br><br>
+        <center><%=JumsHelper.getInstance().home()%></center></div>
     </body>
 </html>

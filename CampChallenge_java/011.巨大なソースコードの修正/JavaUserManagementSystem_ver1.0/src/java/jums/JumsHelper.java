@@ -15,6 +15,6 @@ public class JumsHelper {
     
     //トップへのリンクを返却
     public String home(){
-        return "<a href=\""+homeURL+"\">トップへ戻る</a>";
+        return "<a href=\""+homeURL+"\"> トップへ戻る </a>";
     }
 }

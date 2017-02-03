@@ -31,26 +31,37 @@ public class InsertConfirm extends HttpServlet {
             request.setCharacterEncoding("UTF-8");//セッションに格納する文字コードをUTF-8に変更
             String accesschk = request.getParameter("ac");
             if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
-                throw new Exception("不正なアクセスです。");
+                throw new Exception("不正なアクセスです");
             }
             
             //フォームからの入力を取得
-            String name = request.getParameter("name");
-            String year = request.getParameter("year");
-            String month = request.getParameter("month");
-            String day = request.getParameter("day");
-            String type = request.getParameter("type");
-            String tell = request.getParameter("tell");
-            String comment = request.getParameter("comment");
+            String name   = request.getParameter("name");
+            String year   = request.getParameter("year");
+            String month  = request.getParameter("month");
+            String day    = request.getParameter("day");
+            String type   = request.getParameter("type");
+            String tell   = request.getParameter("tell");
+            String comment= request.getParameter("comment");
 
+            //UserDataBeans.javaへデータを渡す
+            UserDataBeans udb = new UserDataBeans();
+            //udb.setUserID();
+            udb.setName(name);
+            udb.setYear(Integer.parseInt(year));
+            udb.setMonth(Integer.parseInt(month));
+            udb.setDay(Integer.parseInt(day));
+            udb.setType(Integer.parseInt(type));
+            udb.setTell(tell);
+            udb.setComment(comment);
             //セッションに格納
-            session.setAttribute("name", name);
-            session.setAttribute("year", year);
-            session.setAttribute("month",month);
-            session.setAttribute("day", day);
-            session.setAttribute("type", type);
-            session.setAttribute("tell", tell);
-            session.setAttribute("comment", comment);
+            session.setAttribute("udb", udb);
+//            session.setAttribute("name", name);
+//            session.setAttribute("year", year);
+//            session.setAttribute("month",month);
+//            session.setAttribute("day", day);
+//            session.setAttribute("type", type);
+//            session.setAttribute("tell", tell);
+//            session.setAttribute("comment", comment);
             System.out.println("Session updated!!");
             
             request.getRequestDispatcher("/insertconfirm.jsp").forward(request, response);

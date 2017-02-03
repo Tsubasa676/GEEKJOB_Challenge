@@ -1,11 +1,9 @@
-<!-- 課題１、２、７ -->
-<%@page import="jums.JumsHelper"%>
-<%@page import="javax.servlet.http.HttpSession" %>
+<%@page import="jums.UserDataBeans"
+        import="jums.JumsHelper"
+        import="javax.servlet.http.HttpSession" %>
 <%
     HttpSession hs = request.getSession();
-    //職別の数字表記を文字表記に変更
-    String tyeps  = (String)hs.getAttribute("type");
-    int tyepi   = Integer.parseInt(tyeps);
+    UserDataBeans us=(UserDataBeans)hs.getAttribute("udb");
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,27 +13,14 @@
         <title>JUMS登録結果画面</title>
     </head>
     <body bgcolor="#FFFFE0">
-       <% if(!hs.getAttribute("name").equals("")
-               &&!hs.getAttribute("year").equals("0")&&!hs.getAttribute("month").equals("0")&&!hs.getAttribute("day").equals("0")
-               &&!hs.getAttribute("tell").equals("")&&!hs.getAttribute("comment").equals("")){ %>
-        <h1>登録結果</h1><br>
-        名前　　:<%= hs.getAttribute("name")%><br>
-        生年月日:<%= hs.getAttribute("year")+"年"+hs.getAttribute("month")+"月"+hs.getAttribute("day")+"日"%><br>
-        種別　　:<%if(tyepi==1){out.print(" エンジニア");}else if(tyepi==2){out.print(" 営 業　");}else{out.print(" そ の 他");}%><br>
-        電話番号:<%= hs.getAttribute("tell")%><br>
-        自己紹介:<%= hs.getAttribute("comment")%><br>
-        以上の内容で登録しました。<br><br><br>
-        <%//セッションクリア
-           session.invalidate();
-        %>
-        <% }else{ %>
-        <h1>不正なアクセスです。</h1>
-        <h3>登録画面へ戻ってください。</h3>
-        <form action="insert" method="POST">
-            <input type="submit" name="no" value="登録画面に戻る">
-        </form><br><br><br>
-        <% } %>
-        <%=JumsHelper.getInstance().home()%>
-        
+       <div><center><h1>登録　結果</h1></center>
+        名　前　: <%out.print(us.getName());%><br>
+        生年月日: <%out.print(us.getYear()+"年 "+us.getMonth()+"月 "+us.getDay()+"日");%><br>
+        種　別　: <%out.print(us.getType());%><br>
+        電話番号: <%out.print(us.getTell());%><br>
+        自己紹介: <%out.print(us.getComment());%><br><br>
+        以上の内容で登録しました。<br>
+        <br>
+    <center><%=JumsHelper.getInstance().home()%></center></div>
     </body>
 </html>

@@ -1,7 +1,6 @@
 package jums;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -68,9 +67,5 @@ public class UserDataDTO {
     public void setNewDate(Timestamp newDate) {
         this.newDate = newDate;
     }
-
-   void setBirthday(Calendar birthday) {
-      throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-   }
 
 }

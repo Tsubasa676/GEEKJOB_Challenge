@@ -7,7 +7,7 @@
         <title>error</title>
     </head>
     <body bgcolor="#FFCCCC">
-        エラーが発生しました。以下の項目を確認してください。<br>
+        エラーが発生しました(error.jsp)。以下の項目を確認してください。<br>
         <%=request.getAttribute("error")%><br><br>
         <%=JumsHelper.getInstance().home()%>
     </body>
