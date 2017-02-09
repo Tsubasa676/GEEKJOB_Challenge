@@ -46,7 +46,7 @@ public class InsertResult extends HttpServlet {
             udb.UD2DTOMapping(userdata);
             
             //DBへデータの挿入
-            UserDataDAO .getInstance().insert(userdata);
+            UserDataDAO.getInstance().insert(userdata);
             
             //成功したのでセッションの値を削除
             session.invalidate();

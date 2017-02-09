@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,21 +25,41 @@ public class Delete extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
+       
+            HttpSession session = request.getSession();
+       
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Delete</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Delete at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
+            request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
+            //アクセスルートチェック
+            String accesschk = request.getParameter("ac");
+            if(accesschk == null || (Integer)session.getAttribute("ac") != Integer.parseInt(accesschk)){
+               throw new Exception("不正なアクセスです");
+            }
+            
+            int uid = 0;
+            String test = request.getParameter("uid");
+            if(test==null || (Integer)session.getAttribute("uid")!=Integer.parseInt(test)){
+               throw new Exception("DeleteResult.java test 不正なアクセスです");
+            }else{
+               uid = Integer.parseInt(test);
+            }
+                        
+            //DTOオブジェクトにマッピング。DB専用のパラメータに変換
+            UserDataDTO searchData = new UserDataDTO();
+            searchData.setUserID(uid);
+            
+            //
+            UserDataDTO resultData = UserDataDAO.getInstance().searchByID(searchData);
+            request.setAttribute("resultData", resultData);
+            
+            
+           
+           
+           request.getRequestDispatcher("/delete.jsp").forward(request, response);  
+        }catch(Exception e){
+            //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/error.jsp").forward(request, response);
         }
     }
 

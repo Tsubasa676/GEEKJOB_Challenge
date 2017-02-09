@@ -18,7 +18,6 @@ public class UserDataDTO {
     private String comment;
     private Timestamp newDate;
     
-    
     public int getUserID() {
         return userID;
     }
@@ -67,5 +66,5 @@ public class UserDataDTO {
     public void setNewDate(Timestamp newDate) {
         this.newDate = newDate;
     }
-
+    
 }

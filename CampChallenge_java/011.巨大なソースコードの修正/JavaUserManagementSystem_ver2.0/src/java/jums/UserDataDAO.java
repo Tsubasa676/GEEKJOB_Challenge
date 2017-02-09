@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * ユーザー情報を格納するテーブルに対しての操作処理を包括する
@@ -48,7 +49,6 @@ public class UserDataDAO {
                 con.close();
             }
         }
-
     }
     
     /**
@@ -57,7 +57,7 @@ public class UserDataDAO {
      * @throws SQLException 呼び出し元にcatchさせるためにスロー 
      * @return 検索結果
      */
-    public UserDataDTO search(UserDataDTO ud) throws SQLException{
+    public ArrayList<UserDataDTO> search(UserDataDTO ud) throws SQLException{
         Connection con = null;
         PreparedStatement st = null;
         try{
@@ -66,44 +66,72 @@ public class UserDataDAO {
             //
             String sql = "SELECT * FROM user_t";
             boolean flag = false;
+            int name = 0;
+            int birth= 0;
+            int type = 0;
             if (!ud.getName().equals("")) {
                 sql += " WHERE name like ?";
                 flag = true;
+                name=1;
             }
             if (ud.getBirthday()!=null) {
                 if(!flag){
                     sql += " WHERE birthday like ?";
                     flag = true;
+                    birth=(name+1);
                 }else{
                     sql += " AND birthday like ?";
+                    birth=(name+1);
                 }
             }
             if (ud.getType()!=0) {
                 if(!flag){
                     sql += " WHERE type like ?";
+                    type = (name+birth+1);
+                }else if(!ud.getName().equals("")&&ud.getBirthday()!=null){
+                    sql += " AND type like ?";
+                    type = (name+birth);
                 }else{
                     sql += " AND type like ?";
+                    type = (name+birth+1);
                 }
             }
+            //select文の何番目の?に何を加えるかの処理
             st =  con.prepareStatement(sql);
-            st.setString(1, "%"+ud.getName()+"%");
-            st.setString(2, "%"+ new SimpleDateFormat("yyyy").format(ud.getBirthday())+"%");
-            st.setInt(3, ud.getType());
+            if(name!=0){
+               st.setString(name, "%"+ud.getName()+"%");
+            }
+            if(birth!=0){
+               st.setString(birth, "%"+ new SimpleDateFormat("yyyy").format(ud.getBirthday())+"%");
+            }
+            if(type!=0){
+               st.setInt(type, ud.getType());
+            }
             
+            //データをArrylistへ格納
+            ArrayList<UserDataDTO> resultArray = new ArrayList<UserDataDTO>();
+            
+            
+            
+            //データ取得
             ResultSet rs = st.executeQuery();
-            rs.next();
-            UserDataDTO resultUd = new UserDataDTO();
-            resultUd.setUserID(rs.getInt(1));
-            resultUd.setName(rs.getString(2));
-            resultUd.setBirthday(rs.getDate(3));
-            resultUd.setTell(rs.getString(4));
-            resultUd.setType(rs.getInt(5));
-            resultUd.setComment(rs.getString(6));
-            resultUd.setNewDate(rs.getTimestamp(7));
+            while(rs.next()){
+               //データ格納
+               UserDataDTO resultUd = new UserDataDTO();
+               resultUd.setUserID(rs.getInt(1));
+               resultUd.setName(rs.getString(2));
+               resultUd.setBirthday(rs.getDate(3));
+               resultUd.setTell(rs.getString(4));
+               resultUd.setType(rs.getInt(5));
+               resultUd.setComment(rs.getString(6));
+               resultUd.setNewDate(rs.getTimestamp(7));
+               resultArray.add(resultUd);//ArrayListへ格納
+            }
+            
             
             System.out.println("search completed");
 
-            return resultUd;
+            return resultArray;
         }catch(SQLException e){
             System.out.println(e.getMessage());
             throw new SQLException(e);
@@ -156,4 +184,71 @@ public class UserDataDAO {
         }
 
     }
+    
+     /**
+     * ユーザーIDによる1件のデータの削除処理を行う。
+     * @param ud 対応したデータを保持しているJavaBeans
+     * @throws SQLException 呼び出し元にcatchさせるためにスロー 
+     * @return 削除結果
+     */
+    public UserDataDTO deleteByID(UserDataDTO ud) throws SQLException{
+       Connection con = null;
+       PreparedStatement st = null;
+       try{
+         con = DBManager.getConnection();
+         String sql = "DELETE FROM user_t WHERE userID = ?";
+            
+         st =  con.prepareStatement(sql);
+         st.setInt(1, ud.getUserID()); 
+         st.executeUpdate();
+         
+         System.out.println("DeleteByID completed");
+       }catch(SQLException e){
+            System.out.println(e.getMessage());
+            throw new SQLException(e);
+       }finally{
+            if(con != null){
+                con.close();
+            }
+       }
+       UserDataDTO resultUd = new UserDataDTO();
+       return resultUd;
+    }
+    
+     /**
+     * ユーザーIDによる1件のデータの上書き処理を行う。
+     * @param ud 対応したデータを保持しているJavaBeans
+     * @throws SQLException 呼び出し元にcatchさせるためにスロー 
+     * @return 上書き結果
+     */ 
+    public UserDataDTO updateByID(UserDataDTO ud) throws SQLException{
+       Connection con = null;
+       PreparedStatement st = null;
+       try{
+         con = DBManager.getConnection();
+         String sql = "UPDATE user_t set name=?,birthday=?,tell=?,type=?,comment=?,newDate=? WHERE userID =?";
+            
+         st =  con.prepareStatement(sql);
+         st.setString(1, ud.getName()); 
+         st.setDate(2, new java.sql.Date(ud.getBirthday().getTime()));//指定のタイムスタンプ値からSQL格納用のDATE型に変更
+         st.setString(3, ud.getTell());
+         st.setInt(4, ud.getType());
+         st.setString(5, ud.getComment());
+         st.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+         st.setInt(7, ud.getUserID());
+         st.executeUpdate();
+         
+         System.out.println("UpdateByID completed");
+       }catch(SQLException e){
+            System.out.println(e.getMessage());
+            throw new SQLException(e);
+       }finally{
+            if(con != null){
+                con.close();
+            }
+       }
+       UserDataDTO resultUd = new UserDataDTO();
+       return resultUd;
+    }
+
 }

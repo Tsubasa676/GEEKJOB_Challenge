@@ -2,10 +2,12 @@ package jums;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,15 +26,37 @@ public class ResultDetail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       
+            HttpSession session = request.getSession();
+       
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
-
+            
+            //アクセスルートチェック、クエリストリングでは見えてしまうためコメントアウト
+//            String accesschk = request.getParameter("ac");
+//            if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+//                throw new Exception("不正なアクセスです");
+//            }
+            //userIDを受け取りint型へ
+            int uid = Integer.parseInt(request.getParameter("id"));
+            
+            //セッションにuidを入れる。Delete、UpdateでuserIDを受け取るために
+            if(uid>0&&uid%1==0){
+               session.setAttribute("uid", uid);
+            }else{
+               throw new Exception("ResultDetail.java 不正なアクセスです");
+            }
+                        
             //DTOオブジェクトにマッピング。DB専用のパラメータに変換
             UserDataDTO searchData = new UserDataDTO();
-            searchData.setUserID(2);
-
-            UserDataDTO resultData = UserDataDAO .getInstance().searchByID(searchData);
+            searchData.setUserID(uid);
+            
+            //
+            UserDataDTO resultData = UserDataDAO.getInstance().searchByID(searchData);
             request.setAttribute("resultData", resultData);
+            
+            
+            
             
             request.getRequestDispatcher("/resultdetail.jsp").forward(request, response);  
         }catch(Exception e){
